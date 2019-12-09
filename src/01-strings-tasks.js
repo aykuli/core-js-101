@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return `${value1}${value2}`;
 }
-
 
 /**
  * Returns the length of given string.
@@ -68,7 +66,6 @@ function getStringFromTemplate(firstName, lastName) {
 function extractNameFromTemplate(value) {
   return value.slice(7, -1);
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -141,10 +138,9 @@ function removeFirstOccurrences(str, value) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.replace(/[<>]/gi, '');
 }
-
 
 /**
  * Converts all characters of the specified string into the upper case
@@ -202,10 +198,48 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let str = '';
+  for (let i = 0; i < height; i += 1) {
+    for (let j = 0; j < width; j += 1) {
+      if (i === 0) {
+        switch (j) {
+          case 0:
+            str += '┌';
+            break;
+          case width - 1:
+            str += '┐\n';
+            break;
+          default:
+            str += '─';
+        }
+      } else if (i === height - 1) {
+        switch (j) {
+          case 0:
+            str += '└';
+            break;
+          case width - 1:
+            str += '┘\n';
+            break;
+          default:
+            str += '─';
+        }
+      } else {
+        switch (j) {
+          case 0:
+            str += '│';
+            break;
+          case width - 1:
+            str += '│\n';
+            break;
+          default:
+            str += ' ';
+        }
+      }
+    }
+  }
+  return str;
 }
-
 
 /**
  * Encode specified string with ROT13 cipher
@@ -244,7 +278,6 @@ function isString(/* value */) {
   throw new Error('Not implemented');
 }
 
-
 /**
  * Returns playid card id.
  *
@@ -272,7 +305,6 @@ function isString(/* value */) {
 function getCardId(/* value */) {
   throw new Error('Not implemented');
 }
-
 
 module.exports = {
   concatenateStrings,
