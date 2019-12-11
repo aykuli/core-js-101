@@ -212,8 +212,10 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const firstLetter = isStartIncluded ? '[' : '(';
+  const endLetter = isEndIncluded ? ']' : ')';
+  return a > b ? `${firstLetter}${b}, ${a}${endLetter}` : `${firstLetter}${a}, ${b}${endLetter}`;
 }
 
 /**
@@ -228,8 +230,17 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  const arr = [];
+  let res = '';
+  for (let s = 0; s < str.length; s += 1) {
+    arr.push(str[s]);
+  }
+  arr.reverse();
+  for (let i = 0; i < arr.length; i += 1) {
+    res += arr[i];
+  }
+  return res;
 }
 
 /**
@@ -244,8 +255,10 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  const str = num.toString();
+  const revStr = reverseString(str);
+  return Number(revStr);
 }
 
 /**
@@ -268,8 +281,25 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const str = ccn.toString();
+  const [arr, arr2] = [[], []];
+  for (let s = 0; s < str.length; s += 1) {
+    arr.push(Number(str[s]));
+  }
+  const k = arr.length % 2 === 0 ? 0 : 1;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    if ((i + k) % 2 === 0) {
+      if (arr[i] * 2 > 9) {
+        arr2.push(arr[i] * 2 - 9);
+      } else {
+        arr2.push(arr[i] * 2);
+      }
+    } else arr2.push(arr[i]);
+  }
+  const sum = arr2.reduce((acc, cur) => acc + cur, 0);
+  return sum % 10 === 0;
 }
 
 /**
@@ -286,8 +316,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const str = num.toString();
+  const arr = [];
+  for (let s = 0; s < str.length; s += 1) {
+    arr.push(Number(str[s]));
+  }
+  const sum = arr.reduce((acc, cur) => acc + cur, 0);
+  return sum > 9 ? getDigitalRoot(sum) : sum;
 }
 
 /**
@@ -311,8 +347,40 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const bracketsConfig = [
+    ['(', ')'],
+    ['[', ']'],
+    ['{', '}'],
+    ['<', '>'],
+  ];
+  const stack = [str[0]];
+  let res = true;
+
+  for (let i = 1; i < str.length; i += 1) {
+    for (let j = 0; j < bracketsConfig.length; j += 1) {
+      if (str[i] === bracketsConfig[j][0]) {
+        // prettier-ignore
+        if (stack[stack.length - 1] === bracketsConfig[j][1] && stack[stack.length - 1] === bracketsConfig[j][0]) { // eslint-disable-line
+          stack.pop();
+        } else {
+          stack.push(str[i]);
+        }
+      } else if (str[i] === bracketsConfig[j][1]) {
+        if (stack[stack.length - 1] === bracketsConfig[j][0]) {
+          stack.pop();
+        } else {
+          stack.push(str[i]);
+        }
+      }
+    }
+  }
+  if (stack.length === 0 || str.length === 0) {
+    res = true;
+  } else {
+    res = false;
+  }
+  return res;
 }
 
 /**
@@ -335,8 +403,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -351,8 +419,21 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  // prettier-ignore
+  const separatePathes = pathes.map((el) => el.split('/'));
+  let [result, isEqual] = ['', true];
+
+  while (isEqual) {
+    const path = separatePathes[0][0];
+    separatePathes[0].shift();
+    for (let i = 1; i < separatePathes.length; i += 1) {
+      isEqual = path === separatePathes[i][0];
+      separatePathes[i].shift();
+    }
+    if (isEqual) result += `${path}/`;
+  }
+  return result;
 }
 
 /**
