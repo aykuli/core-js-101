@@ -454,8 +454,18 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const [C, rows1, cols1, rows2, cols2] = [[], m1.length, m1[0].length, m2.length, m2[0].length];
+  if (cols1 !== rows2) return false;
+  for (let i = 0; i < rows1; i += 1) C[i] = [];
+  for (let k = 0; k < cols2; k += 1) {
+    for (let i = 0; i < rows1; i += 1) {
+      let t = 0;
+      for (let j = 0; j < rows2; j += 1) t += m1[i][j] * m2[j][k];
+      C[i][k] = t;
+    }
+  }
+  return C;
 }
 
 /**
@@ -488,8 +498,29 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(playGround) {
+  for (let i = 0; i < 3; i += 1) {
+    // prettier-ignore
+    if ((playGround[i][0] === playGround[i][1])
+      && (playGround[i][1] === playGround[i][2])
+      && (playGround[i][0] !== undefined)) {
+      return playGround[i][0];
+    }
+    // prettier-ignore
+    if ((playGround[0][i] === playGround[1][i])
+        && (playGround[1][i] === playGround[2][i])
+        && (playGround[0][i] !== undefined)) {
+      return playGround[0][i];
+    }
+  }
+  // prettier-ignore
+  if (((playGround[0][0] === playGround[1][1]) && (playGround[2][2] === playGround[1][1]))
+    || ((playGround[0][2] === playGround[1][1]) && (playGround[2][0] === playGround[1][1]))) {
+    if (playGround[1][1] !== undefined) {
+      return playGround[1][1];
+    }
+  }
+  return undefined;
 }
 
 module.exports = {
